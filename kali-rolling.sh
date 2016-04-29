@@ -2839,7 +2839,7 @@ echo -e 'application/x-ms-dos-executable=wine.desktop' >> "${file}"
 (( STAGE++ )); echo -e "\n\n ${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}MinGW (Windows)${RESET} ~ cross compiling suite"
 apt -y -qq install wine curl unzip \
   || echo -e ' '${RED}'[!] Issue with apt install'${RESET} 1>&2
-timeout 300 curl --progress -k -L -f "http://sourceforge.net/projects/mingw/files/Installer/mingw-get/mingw-get-0.6.2-beta-20131004-1/mingw-get-0.6.2-mingw32-beta-20131004-1-bin.zip/download" > /tmp/mingw-get.zip \
+timeout 300 curl --progress -k -L -f "https://github.com/benheise/os-scripts/raw/master/mingw-get-0.6.2-mingw32-beta-20131004-1-bin.zip" > /tmp/mingw-get.zip \
   || echo -e ' '${RED}'[!]'${RESET}" Issue downloading mingw-get.zip" 1>&2       #***!!! hardcoded path!
 mkdir -p ~/.wine/drive_c/MinGW/bin/
 unzip -q -o -d ~/.wine/drive_c/MinGW/ /tmp/mingw-get.zip
@@ -2881,7 +2881,7 @@ unrar x -y /tmp/pshtoolkit.rar /usr/share/windows-binaries/ >/dev/null
 (( STAGE++ )); echo -e "\n\n ${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Python (Windows)${RESET}"
 echo -n '[1/2]'; timeout 300 curl --progress -k -L -f "https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi" > /tmp/python.msi \
   || echo -e ' '${RED}'[!]'${RESET}" Issue downloading python.msi" 1>&2       #***!!! hardcoded path!
-echo -n '[2/2]'; timeout 300 curl --progress -k -L -f "http://sourceforge.net/projects/pywin32/files/pywin32/Build%20219/pywin32-219.win32-py2.7.exe/download" > /tmp/pywin32.exe \
+echo -n '[2/2]'; timeout 300 curl --progress -k -L -f "https://github.com/benheise/os-scripts/raw/master/pywin32-219.win32-py2.7.exe" > /tmp/pywin32.exe \
   || echo -e ' '${RED}'[!]'${RESET}" Issue downloading pywin32.exe" 1>&2      #***!!! hardcoded path!
 wine msiexec /i /tmp/python.msi /qb 2>&1 | grep -v 'If something goes wrong, please rerun with\|for more detailed debugging output'
 pushd /tmp/ >/dev/null
