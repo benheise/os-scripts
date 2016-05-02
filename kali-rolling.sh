@@ -247,7 +247,7 @@ if [[ "$?" -ne 0 ]]; then
   echo -e ' '${RED}'[!]'${RESET}" There was an ${RED}issue accessing network repositories${RESET}" 1>&2
   echo -e " ${YELLOW}[i]${RESET} Are the remote network repositories ${YELLOW}currently being sync'd${RESET}?"
   echo -e " ${YELLOW}[i]${RESET} Here is ${BOLD}YOUR${RESET} local network ${BOLD}repository${RESET} information (Geo-IP based):\n"
-  curl -sI http://http.kali.org/README
+  curl -k -sI http://http.kali.org/README
   exit 1
 fi
 
@@ -317,7 +317,7 @@ fi
 #--- Configure keyboard layout (location)
 if [[ -n "${keyboardLayout}" ]]; then
   (( STAGE++ )); echo -e "\n\n ${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Updating ${GREEN}location information${RESET} ~ keyboard layout (${BOLD}${keyboardLayout}${RESET})"
-  geoip_keyboard=$(curl -s http://ifconfig.io/country_code | tr '[:upper:]' '[:lower:]')
+  geoip_keyboard=$(curl -k -s http://ifconfig.io/country_code | tr '[:upper:]' '[:lower:]')
   [ "${geoip_keyboard}" != "${keyboardLayout}" ] \
     && echo -e " ${YELLOW}[i]${RESET} Keyboard layout (${BOLD}${keyboardLayout}${RESET}) doesn't match what's been detected via GeoIP (${BOLD}${geoip_keyboard}${RESET})"
   file=/etc/default/keyboard; #[ -e "${file}" ] && cp -n $file{,.bkup}
@@ -962,9 +962,9 @@ grep -q '^## Force create folders' "${file}" 2>/dev/null \
 grep -q '^## List open ports' "${file}" 2>/dev/null \
   || echo -e '## List open ports\nalias ports="netstat -tulanp"\n' >> "${file}"
 grep -q '^## Get header' "${file}" 2>/dev/null \
-  || echo -e '## Get header\nalias header="curl -I"\n' >> "${file}"
+  || echo -e '## Get header\nalias header="curl -k -I"\n' >> "${file}"
 grep -q '^## Get external IP address' "${file}" 2>/dev/null \
-  || echo -e '## Get external IP address\nalias ipx="curl -s http://ipinfo.io/ip"\n' >> "${file}"
+  || echo -e '## Get external IP address\nalias ipx="curl -k -s http://ipinfo.io/ip"\n' >> "${file}"
 grep -q '^## DNS - External IP #1' "${file}" 2>/dev/null \
   || echo -e '## DNS - External IP #1\nalias dns1="dig +short @resolver1.opendns.com myip.opendns.com"\n' >> "${file}"
 grep -q '^## DNS - External IP #2' "${file}" 2>/dev/null \
@@ -2094,7 +2094,7 @@ apt -y -qq install ipcalc sipcalc \
 
 ##### Install asciinema
 (( STAGE++ )); echo -e "\n\n ${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}asciinema${RESET} ~ CLI terminal recorder"
-curl -s -L https://asciinema.org/install | sh
+curl -k -s -L https://asciinema.org/install | sh
 
 
 ##### Install shutter
@@ -3322,7 +3322,7 @@ apt -y -qq install xprobe \
 (( STAGE++ )); echo -e "\n\n ${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}p0f${RESET} ~ OS fingerprinting"
 apt -y -qq install p0f \
   || echo -e ' '${RED}'[!] Issue with apt install'${RESET} 1>&2
-#p0f -i eth0 -p & curl 192.168.0.1
+#p0f -i eth0 -p & curl -k 192.168.0.1
 
 
 ##### Install nbtscan ~ http://unixwiz.net/tools/nbtscan.html vs http://inetcat.org/software/nbtscan.html (see http://sectools.org/tool/nbtscan/)
